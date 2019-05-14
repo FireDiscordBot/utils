@@ -7,9 +7,10 @@ An extension module to help communicating with services like Pushbullet or Pusho
 
 import aiohttp
 import json
+from pathlib import Path
 from fire import exceptions
 
-with open('config.json', 'r') as cfg:
+with open(Path("C:/Users/Administrator/AppData/Local/Programs/Python/Python37-32/Lib/site-packages/fire/config.json"), 'r') as cfg:
 	config = json.load(cfg)
 
 async def pushbullet(msgtype: str, title: str, message: str, link: str = "https://discordapp.com/channels/@me"):
