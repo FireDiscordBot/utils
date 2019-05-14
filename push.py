@@ -6,6 +6,7 @@ An extension module to help communicating with services like Pushbullet or Pusho
 """
 
 import aiohttp
+import json
 from fire import exceptions
 
 with open('config.json', 'r') as cfg:
