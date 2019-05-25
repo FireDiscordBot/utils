@@ -29,7 +29,7 @@ def replacechannel(text: str):
 def findvideo(text: str):
 	search = re.search(video, text)
 	if search:
-		return search.group(1)
+		return search.group(5)
 	else:
 		return False
 
