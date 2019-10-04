@@ -37,7 +37,7 @@ class Member(MemberConverter):
 		try:
 			return await super().convert(ctx, arg)
 		except BadArgument as e:
-			match = utils.find(lambda m: m.display_name.lower() == arg.lower(), ctx.guild.members)
+			match = utils.find(lambda m: m.name.lower() == arg.lower() or m.display_name.lower() == arg.lower(), ctx.guild.members)
 			if match == None:
 				raise BadArgument('Member not found. Make sure the user is in this guild.')
 			return match
