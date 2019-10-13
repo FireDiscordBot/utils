@@ -12,6 +12,7 @@ inv = r'(http|https)?(:)?(\/\/)?(discordapp|discord|oh-my-god).(gg|io|me|com|wtf
 invreplace = '[redacted invite]'
 
 def findinvite(text: str):
+	text = text.replace('>', '').replace('<', '').replace('_', '').replace('*', '').replace('~', '')
 	search = re.search(inv, text)
 	if search:
 		return search.group(7)
