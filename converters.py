@@ -34,6 +34,15 @@ class Member(MemberConverter):
 	5. Lookup by nickname
 	"""
 	async def convert(self, ctx, arg):
+		if arg == '^':
+			if not ctx.guild:
+				raise BadArgument('The "this" operator, ^, can only be used in servers.')
+			nextmsg = False
+			async for m in ctx.channel.history(limit=5):
+				if m.id == ctx.message.id:
+					nextmsg = True
+				elif nextmsg:
+					return m.author
 		try:
 			return await super().convert(ctx, arg)
 		except BadArgument as e:
@@ -58,6 +67,15 @@ class User(UserConverter):
     4. Lookup by name
     """
 	async def convert(self, ctx, arg):
+		if arg == '^':
+			if not ctx.guild:
+				raise BadArgument('The "this" operator, ^, can only be used in servers.')
+			nextmsg = False
+			async for m in ctx.channel.history(limit=5):
+				if m.id == ctx.message.id:
+					nextmsg = True
+				elif nextmsg:
+					return await super().convert(ctx, str(m.author.id))
 		try:
 			return await super().convert(ctx, arg)
 		except BadArgument as e:
@@ -177,6 +195,15 @@ class UserWithFallback(UserConverter):
 	5. Fallback to Discord API if an ID is provided.
     """
 	async def convert(self, ctx, arg):
+		if arg == '^':
+			if not ctx.guild:
+				raise BadArgument('The "this" operator, ^, can only be used in servers.')
+			nextmsg = False
+			async for m in ctx.channel.history(limit=5):
+				if m.id == ctx.message.id:
+					nextmsg = True
+				elif nextmsg:
+					return await super().convert(ctx, str(m.author.id))
 		try:
 			return await super().convert(ctx, arg)
 		except BadArgument as e:
