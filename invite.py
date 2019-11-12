@@ -12,14 +12,14 @@ inv = r'(http|https)?(:)?(\/\/)?(invite|discordapp|discord|oh-my-god).(gg|io|me|
 invreplace = '[redacted invite]'
 
 def findinvite(text: str):
-	search = re.search(inv, text.strip('<>`*~_#!"();:\''))
+	search = re.search(inv, text.strip('<>`*~_#!"()[]\{\};:\''))
 	if search:
 		return search.group(7)
 	else:
 		return False
 
 def replaceinvite(text: str):
-	message = re.sub(inv, invreplace, text.strip('<>`*~_#!"();:\''), 0, re.MULTILINE)
+	message = re.sub(inv, invreplace, text.strip('<>`*~_#!"()[]\{\};:\''), 0, re.MULTILINE)
 	if message:
 		return message
 	else:
