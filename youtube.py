@@ -13,28 +13,28 @@ video = r'^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w
 ytreplace = '[redacted youtube url]'
 
 def findchannel(text: str):
-	search = re.search(channel, text)
+	search = re.search(channel, text.strip('<>`*~_#!"()[]\{\};:\''))
 	if search:
 		return search.group(1)
 	else:
 		return False
 
 def replacechannel(text: str):
-	message = re.sub(channel, ytreplace, text, 0, re.MULTILINE)
+	message = re.sub(channel, ytreplace, text.strip('<>`*~_#!"()[]\{\};:\''), 0, re.MULTILINE)
 	if message:
 		return message
 	else:
 		return False
 
 def findvideo(text: str):
-	search = re.search(video, text)
+	search = re.search(video, text.strip('<>`*~_#!"()[]\{\};:\''))
 	if search:
 		return search.group(5)
 	else:
 		return False
 
 def replacevideo(text: str):
-	message = re.sub(video, ytreplace, text, 0, re.MULTILINE)
+	message = re.sub(video, ytreplace, text.strip('<>`*~_#!"()[]\{\};:\''), 0, re.MULTILINE)
 	if message:
 		return message
 	else:
