@@ -12,7 +12,7 @@ import os
 from pathlib import Path
 from fire import exceptions
 
-with open(Path(os.environ['LOCALAPPDATA'] + "/Programs/Python/Python37-32/Lib/site-packages/fire/config.json"), 'r') as cfg:
+with open("/home/geek/.local/lib/python3.7/site-packages/fire/config.json", 'r') as cfg:
 	config = json.load(cfg)
 
 SIGNING_SECRET = config['signing_secret']
