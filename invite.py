@@ -19,7 +19,7 @@ invreplace = '[redacted invite]'
 def findinvite(text: str):
 	searches = [re.search(regex, text) for regex in [dgg, dio, dme, dappcom, invgg, omgwtf]]
 	found = [s for s in searches if s]
-	if found[0]:
+	if len(found) >=1 and found[0]:
 		return found[0].group(4)
 	else:
 		return False
