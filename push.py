@@ -11,7 +11,7 @@ import os
 from pathlib import Path
 from fire import exceptions
 
-with open("/home/geek/.local/python3.7/site-packages/fire/config.json", 'r') as cfg:
+with open("/home/geek/.local/lib/python3.7/site-packages/fire/config.json", 'r') as cfg:
 	config = json.load(cfg)
 
 async def pushbullet(msgtype: str, title: str, message: str, link: str = "https://discordapp.com/channels/@me"):
