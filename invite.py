@@ -13,7 +13,7 @@ dio = r'(http|https)?(:)?(\/\/)?discord.io\/([a-zA-Z0-9\-]+)'
 dme = r'(http|https)?(:)?(\/\/)?discord.me\/([a-zA-Z0-9\-]+)'
 dappcom = r'(http|https)?(:)?(\/\/)?discordapp.com\/invite\/([a-zA-Z0-9\-]+)'
 invgg = r'(http|https)?(:)?(\/\/)?invite.gg\/([a-zA-Z0-9\-]+)'
-omgwtf = r'(http|https)?(:)?(\/\/)?oh-my-god.wtf\/([a-zA-Z0-9\-]+)'
+omgwtf = r'(http|https)?(:)?(\/\/)?[^i.]oh-my-god.wtf\/([a-zA-Z0-9\-]+)'
 invreplace = '[redacted invite]'
 
 def findinvite(text: str):
