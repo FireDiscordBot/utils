@@ -12,14 +12,14 @@ twitterurl = r'((?:https?:)?\/\/)?(?:[\w]+\.)?((?:twitter\.com))(\/)([\w]+)(\S+)
 replace = '[redacted twitter url]'
 
 def findtwitter(text: str):
-	search = re.search(twitterurl, text.strip('<>`*~_#!"()[]\{\};:\''))
+	search = re.search(twitterurl, text.strip('<>`*~#!"()[]\{\};:\''))
 	if search:
 		return search.group(4)
 	else:
 		return False
 
 def replacetwitter(text: str):
-	message = re.sub(twitterurl, replace, text.strip('<>`*~_#!"()[]\{\};:\''), 0, re.MULTILINE)
+	message = re.sub(twitterurl, replace, text.strip('<>`*~#!"()[]\{\};:\''), 0, re.MULTILINE)
 	if message:
 		return message
 	else:

@@ -12,14 +12,14 @@ paypalme = r'((?:https?:)?\/\/)?((?:www|m)\.)?((?:paypal\.me))(\/)([\w\-]+)(\S+)
 ppreplace = '[redacted paypal url]'
 
 def findpaypal(text: str):
-	search = re.search(paypalme, text.strip('<>`*~_#!"()[]\{\};:\''))
+	search = re.search(paypalme, text.strip('<>`*~#!"()[]\{\};:\''))
 	if search:
 		return search.group(5)
 	else:
 		return False
 
 def replacepaypal(text: str):
-	message = re.sub(paypalme, ppreplace, text.strip('<>`*~_#!"()[]\{\};:\''), 0, re.MULTILINE)
+	message = re.sub(paypalme, ppreplace, text.strip('<>`*~#!"()[]\{\};:\''), 0, re.MULTILINE)
 	if message:
 		return message
 	else:
