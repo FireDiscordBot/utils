@@ -46,7 +46,13 @@ class Member(MemberConverter):
 		try:
 			return await super().convert(ctx, arg)
 		except BadArgument as e:
-			match = utils.find(lambda m: m.name.lower() == arg.lower() or m.display_name.lower() == arg.lower(), ctx.guild.members)
+			if '#' in arg:
+				args = arg.split('#')
+				name = args[0]
+				discrim = args[1]
+				match = utils.find(lambda m: m.name.lower() == name.lower() and m.discriminator == discrim or m.display_name.lower() == name.lower() and m.discriminator == discrim, ctx.guild.members)
+			else:
+				match = utils.find(lambda m: m.name.lower() == arg.lower() or m.display_name.lower() == arg.lower(), ctx.guild.members)
 			if match == None:
 				raise BadArgument('Member not found. Make sure the user is in this guild.')
 			return match
@@ -79,7 +85,13 @@ class User(UserConverter):
 		try:
 			return await super().convert(ctx, arg)
 		except BadArgument as e:
-			match = utils.find(lambda u: u.name.lower() == arg.lower(), ctx.bot.users)
+			if '#' in arg:
+				args = arg.split('#')
+				name = args[0]
+				discrim = args[1]
+				match = utils.find(lambda m: m.name.lower() == name.lower() and m.discriminator == discrim or m.display_name.lower() == name.lower() and m.discriminator == discrim, ctx.bot.users)
+			else:
+				match = utils.find(lambda m: m.name.lower() == arg.lower() or m.display_name.lower() == arg.lower(), ctx.bot.users)
 			if match == None:
 				raise BadArgument('User not found.')
 			return match
@@ -207,7 +219,13 @@ class UserWithFallback(UserConverter):
 		try:
 			return await super().convert(ctx, arg)
 		except BadArgument as e:
-			match = utils.find(lambda u: u.name.lower() == arg.lower(), ctx.bot.users)
+			if '#' in arg:
+				args = arg.split('#')
+				name = args[0]
+				discrim = args[1]
+				match = utils.find(lambda m: m.name.lower() == name.lower() and m.discriminator == discrim or m.display_name.lower() == name.lower() and m.discriminator == discrim, ctx.bot.users)
+			else:
+				match = utils.find(lambda m: m.name.lower() == arg.lower() or m.display_name.lower() == arg.lower(), ctx.bot.users)
 			if match == None:
 				try:
 					uid = int(arg)
