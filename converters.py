@@ -34,15 +34,17 @@ class Member(MemberConverter):
 	5. Lookup by nickname
 	"""
 	async def convert(self, ctx, arg):
+		if not ctx.guild:
+			raise BadArgument('No guild == No member :c')
 		if arg == '^':
-			if not ctx.guild:
-				raise BadArgument('The "this" operator, ^, can only be used in servers.')
 			nextmsg = False
 			async for m in ctx.channel.history(limit=5):
 				if m.id == ctx.message.id:
 					nextmsg = True
 				elif nextmsg:
 					return m.author
+		if arg.lower() in ctx.bot.aliases:
+			arg = ctx.bot.aliases[arg.lower()]
 		try:
 			return await super().convert(ctx, arg)
 		except BadArgument as e:
@@ -82,6 +84,8 @@ class User(UserConverter):
 					nextmsg = True
 				elif nextmsg:
 					return await super().convert(ctx, str(m.author.id))
+		if arg.lower() in ctx.bot.aliases:
+			arg = ctx.bot.aliases[arg.lower()]
 		try:
 			return await super().convert(ctx, arg)
 		except BadArgument as e:
@@ -216,6 +220,8 @@ class UserWithFallback(UserConverter):
 					nextmsg = True
 				elif nextmsg:
 					return await super().convert(ctx, str(m.author.id))
+		if arg.lower() in ctx.bot.aliases:
+			arg = ctx.bot.aliases[arg.lower()]
 		try:
 			return await super().convert(ctx, arg)
 		except BadArgument as e:
