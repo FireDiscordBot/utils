@@ -44,7 +44,9 @@ class Member(MemberConverter):
 				elif nextmsg:
 					return m.author
 		if arg.lower() in ctx.bot.aliases:
-			arg = ctx.bot.aliases[arg.lower()]
+			ctx.bot.logger.info(f'$YELLOWFinding alias for $BLUE{arg}')
+			arg = str(ctx.bot.aliases[arg.lower()])
+			ctx.bot.logger.info(f'$YELLOWAlias found, $BLUE{arg}')
 		try:
 			return await super().convert(ctx, arg)
 		except BadArgument as e:
@@ -85,7 +87,9 @@ class User(UserConverter):
 				elif nextmsg:
 					return await super().convert(ctx, str(m.author.id))
 		if arg.lower() in ctx.bot.aliases:
-			arg = ctx.bot.aliases[arg.lower()]
+			ctx.bot.logger.info(f'$YELLOWFinding alias for $BLUE{arg}')
+			arg = str(ctx.bot.aliases[arg.lower()])
+			ctx.bot.logger.info(f'$YELLOWAlias found, $BLUE{arg}')
 		try:
 			return await super().convert(ctx, arg)
 		except BadArgument as e:
@@ -221,7 +225,9 @@ class UserWithFallback(UserConverter):
 				elif nextmsg:
 					return await super().convert(ctx, str(m.author.id))
 		if arg.lower() in ctx.bot.aliases:
-			arg = ctx.bot.aliases[arg.lower()]
+			ctx.bot.logger.info(f'$YELLOWFinding alias for $BLUE{arg}')
+			arg = str(ctx.bot.aliases[arg.lower()])
+			ctx.bot.logger.info(f'$YELLOWAlias found, $BLUE{arg}')
 		try:
 			return await super().convert(ctx, arg)
 		except BadArgument as e:
