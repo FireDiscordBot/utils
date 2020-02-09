@@ -34,6 +34,11 @@ class PartialPreviewGuild:
         The partial guild's ID.
     features: List[:class:`str`]
         A list of features the guild has. See :attr:`Guild.features` for more information.
+    approximate_member_count: Optional[:class:`int`]
+        The approximate number of members in the guild.
+    approximate_presence_count: Optional[:class:`int`]
+        The approximate number of members currently active in the guild.
+        This includes idle, dnd, online, and invisible members. Offline members are excluded.
     icon: Optional[:class:`str`]
         The partial guild's icon.
     banner: Optional[:class:`str`]
@@ -48,7 +53,7 @@ class PartialPreviewGuild:
         All emojis that the guild owns.
     """
 
-    __slots__ = ('_state', 'features', 'icon', 'banner', 'id', 'name', 'splash',
+    __slots__ = ('_state', 'features', 'icon', 'approximate_presence_count', 'approximate_member_count', 'banner', 'id', 'name', 'splash',
                  'discovery_splash', 'description', 'emojis')
 
     def __init__(self, state, data):
@@ -57,6 +62,8 @@ class PartialPreviewGuild:
         self.name = data['name']
         self.features = data.get('features', [])
         self.icon = data.get('icon')
+        self.approximate_presence_count = data.get('approximate_presence_count')
+        self.approximate_member_count = data.get('approximate_member_count')
         self.banner = data.get('banner')
         self.splash = data.get('splash')
         self.discovery_splash = data.get('discovery_splash')
