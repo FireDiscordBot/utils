@@ -53,7 +53,7 @@ class PartialPreviewGuild:
 
     def __init__(self, state, data):
         self._state = state
-        self.id = data['id']
+        self.id = int(data['id'])
         self.name = data['name']
         self.features = data.get('features', [])
         self.icon = data.get('icon')
@@ -61,7 +61,7 @@ class PartialPreviewGuild:
         self.splash = data.get('splash')
         self.discovery_splash = data.get('discovery_splash')
         self.description = data.get('description')
-        self.emojis = tuple(map(lambda d: PartialEmoji(d['name'], d.get('animated', False), int(d['id'])), data.get('emojis', [])))
+        self.emojis = tuple(map(lambda d: PartialEmoji.from_dict(d), data.get('emojis', [])))
 
     def __str__(self):
         return self.name
@@ -80,32 +80,32 @@ class PartialPreviewGuild:
         """:class:`Asset`: Returns the guild's icon asset."""
         return self.icon_url_as()
 
-    def icon_url_as(self, *, format='webp', size=1024):
+    def icon_url_as(self, *, format=None, static_format='webp', size=1024):
         """The same operation as :meth:`Guild.icon_url_as`."""
-        return Asset._from_guild_image(self._state, self.id, self.icon, 'icons', format=format, size=size)
+        return Asset._from_guild_image(self._state, self.id, self.icon, 'icons', format=format, static_format=static_format, size=size)
 
     @property
     def banner_url(self):
         """:class:`Asset`: Returns the guild's banner asset."""
         return self.banner_url_as()
 
-    def banner_url_as(self, *, format='webp', size=2048):
+    def banner_url_as(self, *, format=None, static_format='webp', size=2048):
         """The same operation as :meth:`Guild.banner_url_as`."""
-        return Asset._from_guild_image(self._state, self.id, self.banner, 'banners', format=format, size=size)
+        return Asset._from_guild_image(self._state, self.id, self.banner, 'banners', format=format, static_format=static_format, size=size)
 
     @property
     def splash_url(self):
         """:class:`Asset`: Returns the guild's invite splash asset."""
         return self.splash_url_as()
 
-    def splash_url_as(self, *, format='webp', size=2048):
+    def splash_url_as(self, *, format=None, static_format='webp', size=2048):
         """The same operation as :meth:`Guild.splash_url_as`."""
-        return Asset._from_guild_image(self._state, self.id, self.splash, 'splashes', format=format, size=size)
+        return Asset._from_guild_image(self._state, self.id, self.splash, 'splashes', format=format, static_format=static_format, size=size)
 
     @property
     def discovery_splash_url(self):
         """:class:`Asset`: Returns the guild's discovery splash asset."""
         return self.discovery_splash_url_as()
 
-    def discovery_splash_url_as(self, *, format='webp', size=2048):
-        return Asset._from_guild_image(self._state, self.id, self.discovery_splash, 'discovery-splashes', format=format, size=size)
+    def discovery_splash_url_as(self, *, format=None, static_format='webp', size=2048):
+        return Asset._from_guild_image(self._state, self.id, self.discovery_splash, 'discovery-splashes', format=format, static_format=static_format, size=size)
