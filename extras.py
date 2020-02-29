@@ -1,8 +1,8 @@
 """
-converters
+extras
 ~~~~~~~~~~~~~~~~~~~~~
 
-An extension to provide custom converters that ignore case or include a fallback to the Discord API if not in cache
+An extension to provide extra utilities for fire
 """
 
 from discord.asset import Asset
@@ -11,6 +11,7 @@ from discord.object import Object
 from discord.mixins import Hashable
 from discord.enums import ChannelType
 from discord.partial_emoji import PartialEmoji
+from discord.ext import commands
 
 
 class PartialPreviewGuild:
@@ -120,3 +121,11 @@ class PartialPreviewGuild:
     def is_icon_animated(self):
         """:class:`bool`: Returns True if the guild has an animated icon."""
         return bool(self.icon and self.icon.startswith('a_'))
+
+def has_override(build: str):
+    def predicate(ctx):
+        build = ctx.bot.overrides[build]
+        if 'active' not in build or ctx.author.id not in build['active']:
+            raise Exception('change this before pushing')
+        return True
+    return commands.check(predicate)
