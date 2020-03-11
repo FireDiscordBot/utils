@@ -131,5 +131,5 @@ def has_override(**kwargs):
         build = ctx.bot.overrides.get(kwargs.get('build', ''), {})
         if 'active' in build and ctx.author.id in build['active']:
             return True
-        raise MissingOverride()
+        ctx.bot.dispatch('command_error', ctx, MissingOverride())
     return commands.check(predicate)
