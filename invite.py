@@ -17,12 +17,8 @@ invreplace = '[redacted invite]'
 def findinvite(text: str):
 	found = []
 	for r in [dgg, dappcom, invgg, vanity]:
-		[found.append(i) for i in re.findall(r, text, re.MULTILINE)]
-	if len(found) == 1:
-		return found[0]
-	elif len(found) > 1:
-		return found
-	return False
+		[found.append(i) for i in re.findall(r, text, re.MULTILINE) if i]
+	return found
 
 def replaceinvite(text: str):
 	for regex in [dgg, dappcom, invgg, vanity]:
