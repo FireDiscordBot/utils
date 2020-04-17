@@ -15,6 +15,8 @@ from discord.ext.commands.converter import (
 	CategoryChannelConverter
 )
 from discord.ext.commands import BadArgument
+from fuzzywuzzy import fuzz
+
 
 class Member(MemberConverter):
 	"""
@@ -123,6 +125,15 @@ class Role(RoleConverter):
 		try:
 			return await super().convert(ctx, arg)
 		except BadArgument as e:
+			roles = ctx.guild.roles if ctx.guild else []
+			for r in roles:
+				name = r.name
+				# Remove characters like emojis for better matching
+				for c in [c for c in name if not ctx.bot.isascii(c)]:
+					name = name.replace(c, '')
+				if fuzz.ratio(arg.lower(), name.strip().lower()) >= 80:
+					return r
+			# If we get here, either there's no role that matches it or fuzzy wuzzy wasn't a woman so let's just try utils.find
 			match = utils.find(lambda r: r.name.lower() == arg.lower(), ctx.guild.roles)
 			if match == None:
 				raise BadArgument('Role not found.')
