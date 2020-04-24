@@ -11,6 +11,7 @@ from typing import Optional, Union
 import aiohttp
 import asyncio
 import logging
+import inspect
 import json
 import sys
 
@@ -53,6 +54,8 @@ class HTTPClient:
         self.headers['User-Agent'] = self.user_agent
         self.cookies: dict = kwargs.pop('cookies', {})
         self.raise_for_status: bool = kwargs.pop('raise_for_status', True)
+        self.error_handlers: dict = kwargs.pop('error_handlers', {})
+        self.middleware: list = kwargs.pop('middleware', [])
         self.session = aiohttp.ClientSession(
             loop=self.loop,
             headers=self.headers,
@@ -93,6 +96,9 @@ class HTTPClient:
                 ensure_ascii=True
             )
 
+        if self.error_handlers:
+            self.session._raise_for_status = False
+
         method = route.method
         path = route.path
         url = self.BASE_URL + path
@@ -101,6 +107,25 @@ class HTTPClient:
 
         async with self.session.request(method, url, **kwargs) as r:
             logger.info(f'[Request] {method} {path} | {r.status}')
+            if r.status in self.error_handlers:
+                handler = self.error_handlers[r.status]
+                if isinstance(handler, Exception):
+                    raise handler
+                if inspect.iscoroutinefunction(handler):
+                    if inspect.getfullargspec(handler).args == 1:
+                        return await handler(r)
+                    return await handler()
+                if inspect.getfullargspec(handler).args == 1:
+                    return handler(r)
+                return handler()
+            self.session._raise_for_status = self.raise_for_status
+            if self.raise_for_status:
+                r.raise_for_status()
+            for m in self.middleware:
+                if inspect.iscoroutinefunction(m):
+                    await m(r)
+                else:
+                    m(r)
             if route.expected_type:
                 if r.headers.get('Content-Type', '') != route.expected_type:
                     logger.debug(f'[Request] Received unexpected content type')
