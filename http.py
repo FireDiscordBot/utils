@@ -92,9 +92,12 @@ class HTTPClient:
         if route.cookies is not None:
             cookies.update(route.cookies)
 
-        kwargs['headers'] = kwargs.get('headers', {}).update(headers)
-        kwargs['params'] = kwargs.get('params', {}).update(params)
-        kwargs['cookies'] = kwargs.get('cookies', {}).update(cookies)
+        headers.update(kwargs.get('headers', {}))
+        params.update(kwargs.get('params', {}))
+        cookies.update(kwargs.get('cookies', {}))
+        kwargs['headers'] = headers
+        kwargs['params'] = params
+        kwargs['cookies'] = cookies
 
         if 'json' in kwargs:
             headers['Content-Type'] = 'application/json'
