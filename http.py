@@ -52,6 +52,7 @@ class HTTPClient:
         self.user_agent: str = kwargs.pop('user_agent', user_agent)
         self.headers: dict = kwargs.pop('headers', {})
         self.headers['User-Agent'] = self.user_agent
+        self.params: dict = kwargs.pop('params', {})
         self.cookies: dict = kwargs.pop('cookies', {})
         self.raise_for_status: bool = kwargs.pop('raise_for_status', True)
         self.error_handlers: dict = kwargs.pop('error_handlers', {})
@@ -81,12 +82,19 @@ class HTTPClient:
 
     async def request(self, route: Route, **kwargs) -> Union[str, dict, bytes]:
         headers = self.headers.copy()
+        params = self.params.copy()
         cookies = self.cookies.copy()
 
         if route.headers is not None:
             headers.update(route.headers)
+        if route.params is not None:
+            params.update(route.params)
         if route.cookies is not None:
             cookies.update(route.cookies)
+
+        kwargs['headers'] = kwargs.get('headers', {}).update(headers)
+        kwargs['params'] = kwargs.get('params', {}).update(params)
+        kwargs['cookies'] = kwargs.get('cookies', {}).update(cookies)
 
         if 'json' in kwargs:
             headers['Content-Type'] = 'application/json'
