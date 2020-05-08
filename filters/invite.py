@@ -8,10 +8,10 @@ An extension module to help finding and replacing discord invite links
 import re
 from fire import exceptions
 
-dgg = r'(?:http|https)?(?::)?(?:\/\/)?discord.(?:gg|io|me)\/([a-zA-Z0-9\-]+)'
-dappcom = r'(?:http|https)?(?::)?(?:\/\/)?(?:discord(?:app)?|watchanimeattheoffice).com\/invite\/([a-zA-Z0-9\-]+)'
-invgg = r'(?:http|https)?(?::)?(?:\/\/)?invite.gg\/([a-zA-Z0-9\-]+)'
-vanity = r'(?:http|https)?(?::)?(?:\/\/)?(?:oh-my-god|inv|floating-through|get-out-of-my-parking|i-live-in|i-need-personal)\.(?:wtf|space)\/([a-zA-Z0-9\-]+)'
+dgg = r'(?:http|https)?(?::)?(?:\/\/)?(discord.(?:gg|io|me)\/([a-zA-Z0-9\-]+))'
+dappcom = r'(?:http|https)?(?::)?(?:\/\/)?((?:discord(?:app)?|watchanimeattheoffice).com\/invite\/([a-zA-Z0-9\-]+))'
+invgg = r'(?:http|https)?(?::)?(?:\/\/)?(invite.gg\/([a-zA-Z0-9\-]+))'
+vanity = r'(?:http|https)?(?::)?(?:\/\/)?((?:oh-my-god|inv|floating-through|get-out-of-my-parking|i-live-in|i-need-personal)\.(?:wtf|space)\/([a-zA-Z0-9\-]+))'
 invreplace = '[redacted invite]'
 
 def findinvite(text: str):
