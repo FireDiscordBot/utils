@@ -27,7 +27,7 @@ def replacechannel(text: str):
 		return False
 
 def findvideo(text: str):
-	search = re.search(video, text.strip('<>`*~_#!"()[]\{\};:\''))
+	search = re.search(video, text.strip('<>`*~_#!"()[]\{\};:\'').replace('/embed/', '/watch?v='))
 	if search:
 		return search.group(5)
 	else:
