@@ -60,7 +60,7 @@ class Member(MemberConverter):
 			else:
 				match = utils.find(lambda m: m.name.lower() == arg.lower() or m.display_name.lower() == arg.lower(), ctx.guild.members)
 			if match == None:
-				raise BadArgument('Member not found. Make sure the user is in this guild.')
+				raise BadArgument('Member not found :(.')
 			return match
 
 class User(UserConverter):
@@ -81,7 +81,7 @@ class User(UserConverter):
 	async def convert(self, ctx, arg):
 		if arg == '^':
 			if not ctx.guild:
-				raise BadArgument('The "this" operator, ^, can only be used in servers.')
+				raise BadArgument('The above operator, ^, can only be used in servers.')
 			nextmsg = False
 			async for m in ctx.channel.history(limit=5):
 				if m.id == ctx.message.id:
@@ -103,7 +103,7 @@ class User(UserConverter):
 			else:
 				match = utils.find(lambda m: m.name.lower() == arg.lower() or m.display_name.lower() == arg.lower(), ctx.bot.users)
 			if match == None:
-				raise BadArgument('User not found.')
+				raise BadArgument('User not found :(')
 			return match
 
 class Role(RoleConverter):
@@ -136,7 +136,7 @@ class Role(RoleConverter):
 			# If we get here, either there's no role that matches it or fuzzy wuzzy wasn't a woman so let's just try utils.find
 			match = utils.find(lambda r: r.name.lower() == arg.lower(), ctx.guild.roles)
 			if match == None:
-				raise BadArgument('Role not found.')
+				raise BadArgument('Role not found :(')
 			return match
 
 class TextChannel(TextChannelConverter):
@@ -160,7 +160,7 @@ class TextChannel(TextChannelConverter):
 		except BadArgument as e:
 			match = utils.find(lambda c: c.name.lower() == arg.lower(), ctx.guild.text_channels)
 			if match == None:
-				raise BadArgument('Text channel not found.')
+				raise BadArgument('Text channel not found :(')
 			return match
 
 class VoiceChannel(VoiceChannelConverter):
@@ -184,7 +184,7 @@ class VoiceChannel(VoiceChannelConverter):
 		except BadArgument as e:
 			match = utils.find(lambda c: c.name.lower() == arg.lower(), ctx.guild.voice_channels)
 			if match == None:
-				raise BadArgument('Voice channel not found.')
+				raise BadArgument('Voice channel not found :(')
 			return match
 
 class Category(CategoryChannelConverter):
@@ -208,7 +208,7 @@ class Category(CategoryChannelConverter):
 		except BadArgument as e:
 			match = utils.find(lambda c: c.name.lower() == arg.lower(), ctx.guild.categories)
 			if match == None:
-				raise BadArgument('Category not found.')
+				raise BadArgument('Category not found :(')
 			return match
 
 class UserWithFallback(UserConverter):
@@ -228,7 +228,7 @@ class UserWithFallback(UserConverter):
 	async def convert(self, ctx, arg):
 		if arg == '^':
 			if not ctx.guild:
-				raise BadArgument('The "this" operator, ^, can only be used in servers.')
+				raise BadArgument('The above operator, ^, can only be used in servers.')
 			nextmsg = False
 			async for m in ctx.channel.history(limit=5):
 				if m.id == ctx.message.id:
@@ -253,10 +253,10 @@ class UserWithFallback(UserConverter):
 				try:
 					uid = int(arg)
 				except Exception:
-					raise BadArgument('User couldn\'t be found. Try providing an ID')
+					raise BadArgument('User not found :(')
 				if uid:
 					try:
 						return await ctx.bot.fetch_user(uid)
 					except Exception:
-						raise BadArgument('Invalid ID provided!')
+						raise BadArgument('User not found :(')
 			return match
