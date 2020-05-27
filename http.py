@@ -47,6 +47,7 @@ class HTTPClient:
         self.BASE_URL: str = base
         self.format_base_url()
         loop = kwargs.pop('loop', None)
+        self.logging = kwargs.pop('logging', True)
         self.loop = asyncio.get_event_loop() if not loop else loop
         user_agent = 'Python/{0[0]}.{0[1]} aiohttp/{1}'.format(sys.version_info, aiohttp.__version__)
         self.user_agent: str = kwargs.pop('user_agent', user_agent)
@@ -65,7 +66,8 @@ class HTTPClient:
 
     def renew_session(self) -> aiohttp.ClientSession:
         if self.session.closed:
-            logger.warn(f'[Session] Session is closed, renewing')
+            if self.logging:
+                logger.warn(f'[Session] Session is closed, renewing')
             session = aiohttp.ClientSession(
                 loop=self.loop,
                 headers=self.headers,
@@ -117,7 +119,8 @@ class HTTPClient:
         self.session = self.renew_session()
 
         async with self.session.request(method, url, **kwargs) as r:
-            logger.info(f'[Request] {method} {path} | {r.status}')
+            if self.logging:
+                logger.info(f'[Request] {method} {path} | {r.status}')
             if r.status in self.error_handlers:
                 handler = self.error_handlers[r.status]
                 if isinstance(handler, Exception):
@@ -139,7 +142,8 @@ class HTTPClient:
                     m(r)
             if route.expected_type:
                 if r.headers.get('Content-Type', '') != route.expected_type:
-                    logger.debug(f'[Request] Received unexpected content type')
+                    if self.logging:
+                        logger.debug(f'[Request] Received unexpected content type')
                     raise UnexpectedContentType(
                         route.expected_type,
                         r.headers.get('Content-Type', 'Unkown')
