@@ -16,6 +16,7 @@ from discord.ext.commands.converter import (
 )
 from discord.ext.commands import BadArgument
 from fuzzywuzzy import fuzz
+import json
 
 
 class Member(MemberConverter):
@@ -45,9 +46,10 @@ class Member(MemberConverter):
 					nextmsg = True
 				elif nextmsg:
 					return m.author
-		if arg.lower() in ctx.bot.aliases:
+		aliases = json.loads((await ctx.bot.redis.get('aliases', encoding='utf-8')))
+		if arg.lower() in aliases:
 			ctx.bot.logger.info(f'$YELLOWFinding alias for $BLUE{arg}')
-			arg = str(ctx.bot.aliases[arg.lower()])
+			arg = str(aliases[arg.lower()])
 			ctx.bot.logger.info(f'$YELLOWAlias found, $BLUE{arg}')
 		try:
 			return await super().convert(ctx, arg)
@@ -88,9 +90,10 @@ class User(UserConverter):
 					nextmsg = True
 				elif nextmsg:
 					return await super().convert(ctx, str(m.author.id))
-		if arg.lower() in ctx.bot.aliases:
+		aliases = json.loads((await ctx.bot.redis.get('aliases', encoding='utf-8')))
+		if arg.lower() in aliases:
 			ctx.bot.logger.info(f'$YELLOWFinding alias for $BLUE{arg}')
-			arg = str(ctx.bot.aliases[arg.lower()])
+			arg = str(aliases[arg.lower()])
 			ctx.bot.logger.info(f'$YELLOWAlias found, $BLUE{arg}')
 		try:
 			return await super().convert(ctx, arg)
@@ -235,9 +238,10 @@ class UserWithFallback(UserConverter):
 					nextmsg = True
 				elif nextmsg:
 					return await super().convert(ctx, str(m.author.id))
-		if arg.lower() in ctx.bot.aliases:
+		aliases = json.loads((await ctx.bot.redis.get('aliases', encoding='utf-8')))
+		if arg.lower() in aliases:
 			ctx.bot.logger.info(f'$YELLOWFinding alias for $BLUE{arg}')
-			arg = str(ctx.bot.aliases[arg.lower()])
+			arg = str(aliases[arg.lower()])
 			ctx.bot.logger.info(f'$YELLOWAlias found, $BLUE{arg}')
 		try:
 			return await super().convert(ctx, arg)
