@@ -62,7 +62,7 @@ class Member(MemberConverter):
 			else:
 				match = utils.find(lambda m: m.name.lower() == arg.lower() or m.display_name.lower() == arg.lower(), ctx.guild.members)
 			if match == None:
-				raise BadArgument('Member not found :(.')
+				raise BadArgument('Member not found :(')
 			return match
 
 class User(UserConverter):
