@@ -79,7 +79,7 @@ class HTTPClient:
     def format_base_url(self):
         if self.BASE_URL.endswith('/'):
             self.BASE_URL = self.BASE_URL[:-1]
-        if not self.BASE_URL.startswith('https://'):
+        if not self.BASE_URL.startswith('https://') and not self.BASE_URL.startswith('http://'):  # Lets hope it supports https lol
             self.BASE_URL = 'https://' + self.BASE_URL
 
     async def request(self, route: Route, **kwargs) -> Union[str, dict, bytes]:
