@@ -9,7 +9,7 @@ import re
 from fire import exceptions
 
 channel = r'(?:https|http)\:\/\/(?:[\w]+\.)?youtube\.com\/(?:c\/|channel\/|user\/)?([a-zA-Z0-9\-]{1,})'
-video = r'((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?'
+video = r'((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be|invidio.us))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?'
 ytreplace = '[redacted youtube url]'
 
 def findchannel(text: str):
