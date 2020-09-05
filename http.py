@@ -49,7 +49,8 @@ class HTTPClient:
         loop = kwargs.pop('loop', None)
         self.logging = kwargs.pop('logging', True)
         self.loop = asyncio.get_event_loop() if not loop else loop
-        user_agent = 'Python/{0[0]}.{0[1]} aiohttp/{1}'.format(sys.version_info, aiohttp.__version__)
+        user_agent = 'Python/{0[0]}.{0[1]} aiohttp/{1}'.format(
+            sys.version_info, aiohttp.__version__)
         self.user_agent: str = kwargs.pop('user_agent', user_agent)
         self.headers: dict = kwargs.pop('headers', {})
         self.headers['User-Agent'] = self.user_agent
@@ -79,7 +80,8 @@ class HTTPClient:
     def format_base_url(self):
         if self.BASE_URL.endswith('/'):
             self.BASE_URL = self.BASE_URL[:-1]
-        if not self.BASE_URL.startswith('https://') and not self.BASE_URL.startswith('http://'):  # Lets hope it supports https lol
+        # Lets hope it supports https lol
+        if not self.BASE_URL.startswith('https://') and not self.BASE_URL.startswith('http://'):
             self.BASE_URL = 'https://' + self.BASE_URL
 
     async def request(self, route: Route, **kwargs) -> Union[str, dict, bytes]:
@@ -143,12 +145,15 @@ class HTTPClient:
             if route.expected_type:
                 if r.headers.get('Content-Type', '') != route.expected_type:
                     if self.logging:
-                        logger.debug(f'[Request] Received unexpected content type')
+                        logger.debug(
+                            f'[Request] Received unexpected content type')
                     raise UnexpectedContentType(
                         route.expected_type,
                         r.headers.get('Content-Type', 'Unkown')
                     )
 
+            if 'archive' in r.headers.get('Content-Type', ''):
+                return await r.read()
             if r.headers.get('Content-Type', '') == 'application/json':
                 return await r.json()
 
