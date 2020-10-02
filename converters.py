@@ -51,6 +51,11 @@ class Member(MemberConverter):
 			ctx.bot.logger.info(f'$YELLOWFinding alias for $BLUE{arg}')
 			arg = str(aliases[arg.lower()])
 			ctx.bot.logger.info(f'$YELLOWAlias found, $BLUE{arg}')
+		if not ctx.guild.chunked:
+			try:
+				return (await ctx.guild.query_members(arg, limit=1))[0]
+			except Exception:
+				pass
 		try:
 			return await super().convert(ctx, arg)
 		except BadArgument as e:
